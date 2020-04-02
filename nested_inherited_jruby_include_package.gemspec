@@ -19,7 +19,8 @@ Gem::Specification.new do |s|
     "README.md"
   ]
   s.files = [
-    "README.md"
+    "lib/core/src/main/ruby/jruby/java/core_ext/module.rb",
+    "lib/nested_inherited_jruby_include_package.rb"
   ]
   s.homepage = "http://github.com/AndyObtiva/nested_inherited_jruby_include_package".freeze
   s.licenses = ["MIT".freeze]
