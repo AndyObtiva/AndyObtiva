@@ -8,11 +8,10 @@ describe Module do
       OuterModule
       SuperClass
       SubClass
-      SubSubClass
       AnotherSuperClass
       AnotherSubClass
+      SubSubClass
       SuperModule
-      AnotherSuperModule
       SubModule
       SubSubModule
     ].each do |constant|
@@ -65,13 +64,13 @@ describe Module do
   it "can be imported from a superclass using 'include_package package.module" do
     class SuperClass
       include_package java.lang
-      class AnotherSuperClass
+      class NestedSuperClass
       end
     end
     class SubClass < SuperClass
       include_package java.util
     end
-    class AnotherSubClass < SuperClass::AnotherSuperClass
+    class AnotherSubClass < SuperClass::NestedSuperClass
     end
     class SubSubClass < SubClass
     end
@@ -85,7 +84,7 @@ describe Module do
   it "can be imported from a supermodule using 'include_package package.module" do
     module SuperModule
       include_package java.lang
-      module AnotherSuperModule
+      module NestedSuperModule
       end
     end
     class SuperClass
@@ -94,7 +93,7 @@ describe Module do
     class SubClass < SuperClass
     end
     class AnotherSuperClass
-      include SuperClass::AnotherSuperModule
+      include SuperClass::NestedSuperModule
     end
     class AnotherSubClass < AnotherSuperClass
     end
@@ -114,4 +113,18 @@ describe Module do
     expect(SubSubModule::Arrays).to respond_to 'asList'
   end
 
+  it "can be imported from a nested submodule that gets package from submodule that inherits package from a supermodule that inherits package from a nested module" do
+    module SuperModule
+      module NestedSuperModule
+        include_package java.lang
+      end
+      include NestedSuperModule
+    end
+    module SubModule
+      include SuperModule
+      module NestedSubModule
+      end
+    end
+    expect(SubModule::NestedSubModule::System).to respond_to 'getProperty'
+  end
 end

@@ -6,9 +6,24 @@ class Module
   def const_missing(constant)
     hidden_methods = {
       included_packages_from_ancestors_namespaces: lambda do |m|
-        m.ancestors.map do |klass|
-          hidden_methods[:included_packages_from_namespaces].call(klass)
-        end.map(&:to_a).reduce([], :+).uniq
+        collection = []
+        hidden_methods[:collect_ancestors_namespaces].call(collection, m)
+        collection.uniq.map do |klass|
+            hidden_methods[:included_packages].call(klass)
+          end.map(&:to_a).reduce([], :+).uniq
+      end,
+
+      collect_ancestors_namespaces: lambda do |collection, m|
+        return if collection.include?(m)
+        collection << m
+        result = (m.ancestors + hidden_methods[:namespaces].call(m)[1..-1]).uniq
+        if result.size == 1
+          return
+        else
+          result[1..-1].each do |klass|
+            hidden_methods[:collect_ancestors_namespaces].call(collection, klass)
+          end
+        end
       end,
 
       included_packages_from_namespaces: lambda do |m|

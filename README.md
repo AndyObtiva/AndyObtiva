@@ -49,7 +49,7 @@ More examples can be found in:
 
 Add the following to `Gemfile`:
 ```
-gem 'nested_inherited_jruby_include_package', '~> 0.1.0'
+gem 'nested_inherited_jruby_include_package', '~> 0.2.0'
 ```
 
 And, then run:
@@ -59,7 +59,13 @@ jruby -S bundle install
 
 If you are not using Bundler, run:
 ```
-jruby -S gem install nested_inherited_jruby_include_package -v 0.1.0
+jruby -S gem install nested_inherited_jruby_include_package -v 0.2.0
+```
+
+Then add this line to your code:
+
+```ruby
+require 'nested_inherited_jruby_include_package'
 ```
 
 # Caveats
@@ -75,6 +81,10 @@ To avoid method and constant pollution in `Module`, the implementation intention
 # Issue Reporting
 
 This is an early alpha. It has only been used in a couple of projects. As such, there are no guarantees for its functionality. Please report any issues you might discover when using on your own projects.
+
+# Change Log
+
+[CHANGELOG.md](CHANGELOG.md)
 
 # License
 
