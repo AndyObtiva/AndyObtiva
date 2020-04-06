@@ -14,7 +14,7 @@ class Module
       end,
 
       collect_ancestors_namespaces: lambda do |collection, m|
-        return if collection.include?(m)
+        return if m.is_a?(Java::JavaPackage) || collection.include?(m)
         collection << m
         result = (m.ancestors + hidden_methods[:namespaces].call(m)[1..-1]).uniq
         if result.size == 1
@@ -39,6 +39,7 @@ class Module
       end,
 
       java_aliases_from_ancestors_namespaces: lambda do |m|
+        return [] if m.is_a?(Java::JavaPackage)
         m.ancestors.map do |klass|
           hidden_methods[:java_aliases_from_namespaces].call(klass)
         end.reverse.reduce({}, :merge)

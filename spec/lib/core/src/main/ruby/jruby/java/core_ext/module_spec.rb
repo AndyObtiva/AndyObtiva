@@ -127,4 +127,15 @@ describe Module do
     end
     expect(SubModule::NestedSubModule::System).to respond_to 'getProperty'
   end
+
+  it "works with Java class inheritance" do
+    module GUI
+      include_package 'javax.swing'
+      include_package 'java.awt.image' # BufferedImage
+      # bellow won't work without accessing BufferedImage before :
+      class ShowImage < JFrame
+      end
+    end
+    expect(GUI::ShowImage::BufferedImage.respond_to?(:new, [10, 20, java.awt.image.BufferedImage::TYPE_BYTE_BINARY])).to eq(true)
+  end
 end

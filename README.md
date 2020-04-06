@@ -41,6 +41,20 @@ SubClass.new
 # prints #<Java::JavaUtil::Arrays::ArrayList:0x7ce3cb8e>
 ```
 
+Example (java inheritance):
+
+```ruby
+module GUI
+  include_package 'javax.swing'
+  include_package 'java.awt.image' # BufferedImage
+  # bellow won't work without accessing BufferedImage before :
+  class ShowImage < JFrame
+    p BufferedImage.new(10, 20, BufferedImage::TYPE_BYTE_BINARY)
+  end
+end
+# prints #<Java::JavaAwtImage::BufferedImage:0x2f112965>
+```
+
 More examples can be found in:
 
 [spec/lib/core/src/main/ruby/jruby/java/core_ext/module_spec.rb](spec/lib/core/src/main/ruby/jruby/java/core_ext/module_spec.rb)
@@ -49,7 +63,7 @@ More examples can be found in:
 
 Add the following to `Gemfile`:
 ```
-gem 'nested_inherited_jruby_include_package', '~> 0.2.0'
+gem 'nested_inherited_jruby_include_package', '~> 0.3.0'
 ```
 
 And, then run:
@@ -59,7 +73,7 @@ jruby -S bundle install
 
 If you are not using Bundler, run:
 ```
-jruby -S gem install nested_inherited_jruby_include_package -v 0.2.0
+jruby -S gem install nested_inherited_jruby_include_package -v 0.3.0
 ```
 
 Then add this line to your code:
